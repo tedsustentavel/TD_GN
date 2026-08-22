@@ -3,17 +3,35 @@ import Colaborador from '@/models/Colaborador';
 import Status from '@/models/Status';
 import Tag from '@/models/Tag';
 import Termo from '@/models/Termo';
+import Source from '@/models/Source';
+import TipoDeTabela from '@/models/TipoDeTabela';
+import TipoDeAtributo from '@/models/TipoDeAtributo';
+import TipoDeControle from '@/models/TipoDeControle';
+import TipoDeRelacionamento from '@/models/TipoDeRelacionamento';
+import Tabela from '@/models/Tabela';
+import Relacionamento from '@/models/Relacionamento';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
     await dbConnect();
 
-    // Limpar o banco de dados antes de popular
+    // Limpar o banco de dados antes de popular (Glossário)
     await Termo.deleteMany({});
     await Colaborador.deleteMany({});
     await Status.deleteMany({});
     await Tag.deleteMany({});
+
+    // Limpar o banco de dados antes de popular (Dicionário de Dados)
+    await Source.deleteMany({});
+    await TipoDeTabela.deleteMany({});
+    await TipoDeAtributo.deleteMany({});
+    await TipoDeControle.deleteMany({});
+    await TipoDeRelacionamento.deleteMany({});
+    await Tabela.deleteMany({});
+    await Relacionamento.deleteMany({});
+
+    // ─── GLOSSÁRIO DE NEGÓCIOS ───
 
     // 1. Criar Status
     const statusRascunho = await Status.create({ 
@@ -122,6 +140,179 @@ export async function GET() {
         'Em revisão técnica para incluir margem bruta no cálculo oficial.'
       ]
     });
+
+    // ─── DICIONÁRIO DE DADOS ───
+
+    // 1. Criar Fontes de Dados (Sources)
+    const sourcePg = await Source.create({
+      nome: 'PostgreSQL Produção',
+      descricao: 'Banco relacional transacional da aplicação principal'
+    });
+    const sourceDw = await Source.create({
+      nome: 'Snowflake Data Warehouse',
+      descricao: 'Repositório de dados analíticos para dashboards'
+    });
+
+    // 2. Criar Tipos de Tabela
+    const tipoTabelaTransac = await TipoDeTabela.create({
+      tipo_de_tabela: 'Transacional',
+      descricao: 'Tabela OLTP para persistência de transações correntes'
+    });
+    const tipoTabelaDim = await TipoDeTabela.create({
+      tipo_de_tabela: 'Dimensão',
+      descricao: 'Tabela dimensional (Star Schema/Snowflake) contendo descritores'
+    });
+    const tipoTabelaFato = await TipoDeTabela.create({
+      tipo_de_tabela: 'Fato',
+      descricao: 'Tabela fato analítica contendo métricas e chaves'
+    });
+
+    // 3. Criar Tipos de Atributo (Data Types)
+    const tipoAttrVarchar = await TipoDeAtributo.create({
+      tipo_de_atributo: 'VARCHAR',
+      descricao: 'Texto de tamanho variável'
+    });
+    const tipoAttrInt = await TipoDeAtributo.create({
+      tipo_de_atributo: 'INTEGER',
+      descricao: 'Número inteiro de 4 bytes'
+    });
+    const tipoAttrNumeric = await TipoDeAtributo.create({
+      tipo_de_atributo: 'NUMERIC',
+      descricao: 'Número decimal preciso'
+    });
+    const tipoAttrDatetime = await TipoDeAtributo.create({
+      tipo_de_atributo: 'DATETIME',
+      descricao: 'Data e hora completa'
+    });
+
+    // 4. Criar Tipos de Controle
+    const ctrlNormal = await TipoDeControle.create({
+      tipo_de_controle: 'Normal / Público',
+      descricao: 'Dado aberto sem classificação ou regras especiais'
+    });
+    const ctrlPessoal = await TipoDeControle.create({
+      tipo_de_controle: 'LGPD - Pessoal',
+      descricao: 'Dado pessoal sujeito à legislação de privacidade'
+    });
+    const ctrlSensivel = await TipoDeControle.create({
+      tipo_de_controle: 'LGPD - Sensível',
+      descricao: 'Dado sensível que requer anonimização ou criptografia'
+    });
+
+    // 5. Criar Tipos de Relacionamento
+    const relPkFk = await TipoDeRelacionamento.create({
+      tipo_de_relacionamento: 'Chave Primária - Chave Estrangeira',
+      descricao: 'Relacionamento padrão de integridade referencial'
+    });
+
+    // 6. Criar Tabelas e Atributos
+    const tabelaClientes = await Tabela.create({
+      nome: 'clientes',
+      descricao: 'Cadastro principal de clientes ativos na plataforma',
+      tipo_de_tabela_id: tipoTabelaTransac._id,
+      source_id: sourcePg._id,
+      owner_id: marcus._id,
+      steward_id: maria._id,
+      dba_id: joao._id,
+      atributos: [
+        {
+          nome: 'id',
+          descricao: 'Identificador exclusivo do cliente',
+          tamanho: null,
+          chave_primaria: true,
+          chave_estrangeira: false,
+          anulavel: false,
+          tipo_de_atributo_id: tipoAttrInt._id,
+          tipo_de_controle_id: ctrlNormal._id
+        },
+        {
+          nome: 'nome',
+          descricao: 'Nome completo do cliente cadastrado',
+          tamanho: 150,
+          chave_primaria: false,
+          chave_estrangeira: false,
+          anulavel: false,
+          tipo_de_atributo_id: tipoAttrVarchar._id,
+          tipo_de_controle_id: ctrlPessoal._id
+        },
+        {
+          nome: 'email',
+          descricao: 'E-mail de contato principal',
+          tamanho: 100,
+          chave_primaria: false,
+          chave_estrangeira: false,
+          anulavel: false,
+          tipo_de_atributo_id: tipoAttrVarchar._id,
+          tipo_de_controle_id: ctrlPessoal._id
+        }
+      ]
+    });
+
+    const tabelaPedidos = await Tabela.create({
+      nome: 'pedidos',
+      descricao: 'Registros das compras efetuadas pelos clientes',
+      tipo_de_tabela_id: tipoTabelaTransac._id,
+      source_id: sourcePg._id,
+      owner_id: marcus._id,
+      steward_id: maria._id,
+      dba_id: joao._id,
+      atributos: [
+        {
+          nome: 'id',
+          descricao: 'Identificador exclusivo do pedido',
+          tamanho: null,
+          chave_primaria: true,
+          chave_estrangeira: false,
+          anulavel: false,
+          tipo_de_atributo_id: tipoAttrInt._id,
+          tipo_de_controle_id: ctrlNormal._id
+        },
+        {
+          nome: 'cliente_id',
+          descricao: 'Chave estrangeira apontando para a tabela de clientes',
+          tamanho: null,
+          chave_primaria: false,
+          chave_estrangeira: true,
+          anulavel: false,
+          tipo_de_atributo_id: tipoAttrInt._id,
+          tipo_de_controle_id: ctrlNormal._id
+        },
+        {
+          nome: 'valor_total',
+          descricao: 'Soma total do valor do pedido',
+          tamanho: null,
+          chave_primaria: false,
+          chave_estrangeira: false,
+          anulavel: false,
+          tipo_de_atributo_id: tipoAttrNumeric._id,
+          tipo_de_controle_id: ctrlNormal._id
+        },
+        {
+          nome: 'criado_em',
+          descricao: 'Data e hora da efetivação da compra',
+          tamanho: null,
+          chave_primaria: false,
+          chave_estrangeira: false,
+          anulavel: false,
+          tipo_de_atributo_id: tipoAttrDatetime._id,
+          tipo_de_controle_id: ctrlNormal._id
+        }
+      ]
+    });
+
+    // 7. Criar Relacionamentos entre Atributos
+    const attrClienteIdEmClientes = tabelaClientes.atributos.find(a => a.nome === 'id');
+    const attrClienteIdEmPedidos = tabelaPedidos.atributos.find(a => a.nome === 'cliente_id');
+
+    if (attrClienteIdEmClientes && attrClienteIdEmPedidos) {
+      await Relacionamento.create({
+        tipo_de_relacionamento_id: relPkFk._id,
+        tabela_origem_id: tabelaPedidos._id,
+        atributo_origem_id: attrClienteIdEmPedidos._id,
+        tabela_destino_id: tabelaClientes._id,
+        atributo_destino_id: attrClienteIdEmClientes._id
+      });
+    }
 
     return NextResponse.json({
       success: true,

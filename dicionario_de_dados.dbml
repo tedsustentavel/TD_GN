@@ -1,0 +1,88 @@
+Project td_dg {
+  database_type: 'PostgreSQL'
+  Note: 'Banco de dados do TD Data Governance'
+}
+
+Table atributo {
+  id integer [pk]
+  nome string
+  descricao string
+  tamanho integer
+  chave_primaria boolean [not null]
+  chave_estrangeira boolean [not null]
+  anulavel boolean [not null]
+  tipo_de_atributo_id integer [not null, ref: > tipo_de_atributo.id]
+  tipo_de_controle_id integer [not null, ref: > tipo_de_controle.id]
+  tabela_id integer [not null, ref: > tabela.id]
+  criado_em datetime [default: `now()`]
+  atualizado_em datetime [default: `now()`]
+}
+
+Table colaborador {
+  id integer [pk, increment]
+  nome string
+  criado_em datetime [default: `now()`]
+  atualizado_em datetime [default: `now()`]
+}
+
+Table relacionamento {
+  id integer [pk, increment]
+  tipo_de_relacionamento_id integer [not null, ref: > tipo_de_relacionamento.id]
+  atributo_de_origem_id integer [not null, ref: > atributo.id]
+  atributo_de_destino_id integer [not null, ref: > atributo.id]
+  criado_em datetime [default: `now()`]
+  atualizado_em datetime [default: `now()`]
+}
+
+Table source {
+  id integer [pk, increment]
+  nome string
+  descricao string
+  criado_em datetime [default: `now()`]
+  atualizado_em datetime [default: `now()`]
+}
+
+Table tabela {
+  id integer [pk, increment]
+  nome string
+  descricao string
+  tipo_de_tabela_id integer [not null, ref: > tipo_de_tabela.id]
+  source_id integer [not null, ref: > source.id]
+  owner_id integer [not null, ref: > colaborador.id]
+  steward_id integer [not null, ref: > colaborador.id]
+  dba_id integer [not null, ref: > colaborador.id]
+  criado_em datetime [default: `now()`]
+  atualizado_em datetime [default: `now()`]
+}
+
+Table tipo_de_atributo {
+  id integer [pk, increment]
+  tipo_de_atributo string
+  descricao string
+  criado_em datetime [default: `now()`]
+  atualizado_em datetime [default: `now()`]
+}
+
+Table tipo_de_controle {
+  id integer [pk, increment]
+  tipo_de_controle string
+  descricao string
+  criado_em datetime [default: `now()`]
+  atualizado_em datetime [default: `now()`]
+}
+
+Table tipo_de_tabela {
+  id integer [pk, increment]
+  tipo_de_tabela string
+  descricao string
+  criado_em datetime [default: `now()`]
+  atualizado_em datetime [default: `now()`]
+}
+
+Table tipo_de_relacionamento {
+  id integer [pk, increment]
+  tipo_de_relacionamento string
+  descricao string
+  criado_em datetime [default: `now()`]
+  atualizado_em datetime [default: `now()`]
+}
