@@ -42,13 +42,13 @@ export async function GET() {
       status: 'Em Revisão', 
       descricao: 'Termo sendo avaliado pelo Steward de Dados e equipe de governança' 
     });
-    const statusAprovado = await Status.create({ 
-      status: 'Aprovado', 
-      descricao: 'Termo aprovado e ativo para uso institucional' 
+    const statusPublicado = await Status.create({ 
+      status: 'Publicado', 
+      descricao: 'Termo aprovado e publicado para uso institucional' 
     });
-    const statusObsoleto = await Status.create({ 
-      status: 'Obsoleto', 
-      descricao: 'Termo descontinuado que foi substituído por outro termo de negócio' 
+    const statusEmObsolescencia = await Status.create({ 
+      status: 'Em obsolescência', 
+      descricao: 'Termo em desuso que está em processo de obsolescência' 
     });
 
     // 2. Criar Colaboradores
@@ -67,7 +67,7 @@ export async function GET() {
       termo: 'Churn Rate',
       definicao: 'Taxa de cancelamento de clientes em um determinado período de tempo, calculada dividindo os cancelamentos pelo número inicial de clientes.',
       origem_definicao: 'Dicionário de Métricas SaaS',
-      status_id: statusAprovado._id,
+      status_id: statusPublicado._id,
       owner_id: marcus._id,
       steward_id: maria._id,
       tags: [tagFinanceiro._id, tagVendas._id],
@@ -95,7 +95,7 @@ export async function GET() {
       termo: 'Custo de Aquisição de Cliente',
       definicao: 'Investimento médio em esforços diretos para conquistar um novo cliente, somando marketing e vendas em um período de tempo.',
       origem_definicao: 'Guia de Métricas de Growth',
-      status_id: statusAprovado._id,
+      status_id: statusPublicado._id,
       owner_id: joao._id,
       steward_id: maria._id,
       tags: [tagFinanceiro._id, tagMarketing._id],

@@ -71,7 +71,7 @@ export default function TermoDetailPage() {
       .then(r => r.json())
       .then(d => {
         if (d.success) setTermo(d.data);
-        else setError('Termo não encontrado.');
+        else setError(d.error || 'Termo não encontrado.');
         setLoading(false);
       })
       .catch(() => { setError('Erro ao carregar o termo.'); setLoading(false); });
