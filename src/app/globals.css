@@ -3,43 +3,43 @@
 :root {
   --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   
-  /* Color Palette - Deep Obsidian & Electric Accents */
-  --bg-main: #070610;
-  --bg-gradient: linear-gradient(135deg, #070610 0%, #0d0b25 50%, #150f38 100%);
-  --card-bg: rgba(18, 16, 35, 0.55);
-  --card-hover-bg: rgba(26, 23, 50, 0.75);
-  --border-color: rgba(255, 255, 255, 0.07);
-  --border-hover-color: rgba(139, 92, 246, 0.3);
+  /* Color Palette - T&D Sustentável Identity */
+  --bg-main: #001321; /* Um azul escuro profundo coerente com o Azul Oceano #00253F */
+  --bg-gradient: linear-gradient(135deg, #001321 0%, #00253F 50%, #10344f 100%);
+  --card-bg: rgba(0, 37, 63, 0.45); /* Baseado no Azul Oceano #00253F com transparência */
+  --card-hover-bg: rgba(0, 37, 63, 0.65);
+  --border-color: rgba(71, 162, 185, 0.15); /* Baseado no Azul Ecowave #47a2b9 */
+  --border-hover-color: rgba(148, 185, 98, 0.4); /* Baseado no Verde Sustentável #94b962 */
   
-  --primary: #8b5cf6;
-  --primary-glow: rgba(139, 92, 246, 0.15);
-  --secondary: #06b6d4;
-  --secondary-glow: rgba(6, 182, 212, 0.15);
+  --primary: #94b962; /* Verde sustentável */
+  --primary-glow: rgba(148, 185, 98, 0.15);
+  --secondary: #47a2b9; /* Azul ecowave */
+  --secondary-glow: rgba(71, 162, 185, 0.15);
   
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
+  --text-main: #f8f8f8; /* Branco névoa */
+  --text-muted: #cbd5e1; /* Ajustado para melhor contraste sobre azul oceano */
+  --text-dim: #94a3b8;
   
   /* Status Colors */
-  --status-approved-bg: rgba(16, 185, 129, 0.12);
-  --status-approved-text: #34d399;
-  --status-approved-border: rgba(16, 185, 129, 0.25);
+  --status-approved-bg: rgba(148, 185, 98, 0.12); /* Verde sustentável */
+  --status-approved-text: #a6cc72;
+  --status-approved-border: rgba(148, 185, 98, 0.3);
   
-  --status-review-bg: rgba(245, 158, 11, 0.12);
-  --status-review-text: #fbbf24;
-  --status-review-border: rgba(245, 158, 11, 0.25);
+  --status-review-bg: rgba(71, 162, 185, 0.12); /* Azul ecowave */
+  --status-review-text: #5cb7ce;
+  --status-review-border: rgba(71, 162, 185, 0.3);
   
-  --status-draft-bg: rgba(100, 116, 139, 0.15);
-  --status-draft-text: #cbd5e1;
-  --status-draft-border: rgba(100, 116, 139, 0.25);
+  --status-draft-bg: rgba(248, 248, 248, 0.08); /* Branco névoa translúcido */
+  --status-draft-text: #e2e8f0;
+  --status-draft-border: rgba(248, 248, 248, 0.15);
   
-  --status-obsolete-bg: rgba(239, 68, 68, 0.12);
+  --status-obsolete-bg: rgba(239, 68, 68, 0.1);
   --status-obsolete-text: #f87171;
-  --status-obsolete-border: rgba(239, 68, 68, 0.25);
+  --status-obsolete-border: rgba(239, 68, 68, 0.2);
   
-  --shadow-sm: 0 2px 8px -1px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 12px 24px -4px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 20px 40px -8px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 2px 8px -1px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 12px 24px -4px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 20px 40px -8px rgba(0, 0, 0, 0.6);
   
   --radius-sm: 8px;
   --radius-md: 14px;
@@ -74,14 +74,14 @@ html, body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(7, 6, 16, 0.5);
+  background: rgba(0, 19, 33, 0.5);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, 0.2);
+  background: rgba(71, 162, 185, 0.2);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 92, 246, 0.4);
+  background: rgba(148, 185, 98, 0.4);
 }
 
 /* Typography elements */
@@ -385,12 +385,14 @@ a {
   color: var(--status-review-text);
   border-color: var(--status-review-border);
 }
-.badge-status.aprovado {
+.badge-status.aprovado,
+.badge-status.publicado {
   background: var(--status-approved-bg);
   color: var(--status-approved-text);
   border-color: var(--status-approved-border);
 }
-.badge-status.obsoleto {
+.badge-status.obsoleto,
+.badge-status.em-obsolescencia {
   background: var(--status-obsolete-bg);
   color: var(--status-obsolete-text);
   border-color: var(--status-obsolete-border);

@@ -3,6 +3,7 @@ import Termo from '@/models/Termo';
 import Status from '@/models/Status';
 import Colaborador from '@/models/Colaborador';
 import Tag from '@/models/Tag';
+import { verifySession } from '@/lib/session';
 import { NextResponse } from 'next/server';
 
 export async function GET(request) {
@@ -13,7 +14,41 @@ export async function GET(request) {
     const statusFilter = searchParams.get('status');
     const tagFilter = searchParams.get('tag');
 
+    // Verificação de autenticação e papel de administrador
+    const sessionCookie = request.cookies.get('colaborador_session');
+    let isAdmin = false;
+    if (sessionCookie) {
+      const payload = await verifySession(sessionCookie.value);
+      if (payload && payload.isAdmin) {
+        isAdmin = true;
+      }
+    }
+
     let query = {};
+
+    // Se o usuário não for administrador, ele só pode ver e pesquisar termos com status 'Publicado' ou 'Em obsolescência'
+    if (!isAdmin) {
+      const allowedStatuses = await Status.find({
+        status: { $in: ['Publicado', 'Em obsolescência'] }
+      });
+      const allowedStatusIds = allowedStatuses.map(s => s._id.toString());
+
+      if (statusFilter) {
+        if (allowedStatusIds.includes(statusFilter)) {
+          query.status_id = statusFilter;
+        } else {
+          // Se pediu um status não permitido, retorna vazio
+          return NextResponse.json({ success: true, data: [] });
+        }
+      } else {
+        query.status_id = { $in: allowedStatuses.map(s => s._id) };
+      }
+    } else {
+      // Filtro por Status para admins
+      if (statusFilter) {
+        query.status_id = statusFilter;
+      }
+    }
 
     // Filtro por texto geral (termo, definição, acrônimo ou sinônimo)
     if (q) {
@@ -23,11 +58,6 @@ export async function GET(request) {
         { sinonimos: { $regex: q, $options: 'i' } },
         { definicao: { $regex: q, $options: 'i' } }
       ];
-    }
-
-    // Filtro por Status
-    if (statusFilter) {
-      query.status_id = statusFilter;
     }
 
     // Filtro por Tag
