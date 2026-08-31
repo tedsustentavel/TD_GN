@@ -385,6 +385,11 @@ a {
   color: var(--status-review-text);
   border-color: var(--status-review-border);
 }
+.badge-status.em-aprovacao {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.3);
+}
 .badge-status.aprovado,
 .badge-status.publicado {
   background: var(--status-approved-bg);

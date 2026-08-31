@@ -15,10 +15,14 @@ export async function GET(request, { params }) {
     // Verificação de autenticação e papel de administrador
     const sessionCookie = request.cookies.get('colaborador_session');
     let isAdmin = false;
+    let userId = null;
     if (sessionCookie) {
       const payload = await verifySession(sessionCookie.value);
-      if (payload && payload.isAdmin) {
-        isAdmin = true;
+      if (payload) {
+        userId = payload.id;
+        if (payload.isAdmin) {
+          isAdmin = true;
+        }
       }
     }
 
@@ -34,10 +38,16 @@ export async function GET(request, { params }) {
     }
 
     // Se o usuário não for administrador, verificar se o status do termo é 'Publicado' ou 'Em obsolescência'
+    // ou se o termo está 'Em aprovação' e o usuário logado é o owner do termo.
     if (!isAdmin) {
       const statusName = termo.status_id?.status;
-      if (statusName !== 'Publicado' && statusName !== 'Em obsolescência') {
-        return NextResponse.json({ success: false, error: 'Acesso negado. Apenas administradores podem ver este termo.' }, { status: 403 });
+      const ownerId = termo.owner_id?._id?.toString() || termo.owner_id?.toString();
+      const isOwner = userId && ownerId && userId === ownerId;
+
+      if (statusName === 'Em aprovação' && isOwner) {
+        // Permitido visualizar seu próprio termo sob aprovação
+      } else if (statusName !== 'Publicado' && statusName !== 'Em obsolescência') {
+        return NextResponse.json({ success: false, error: 'Acesso negado. Apenas administradores ou o proprietário (owner) podem ver este termo.' }, { status: 403 });
       }
     }
 
