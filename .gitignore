@@ -41,6 +41,4 @@ yarn-error.log*
 next-env.d.ts
 
 # AI
-AGENTS.md
-CLAUDE.md
-regras_bd.md
+/planejamento
