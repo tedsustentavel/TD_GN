@@ -60,7 +60,8 @@ export async function middleware(request) {
   if (pathname.startsWith('/api')) {
     const method = request.method;
     if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
-      if (!sessionPayload.isAdmin) {
+      const isAprovarRoute = pathname.match(/^\/api\/termos\/[^/]+\/aprovar$/);
+      if (!sessionPayload.isAdmin && !isAprovarRoute) {
         return NextResponse.json(
           { success: false, error: 'Acesso negado. Apenas administradores podem realizar modificações.' },
           { status: 403 }

@@ -17,31 +17,55 @@ export async function GET(request) {
     // Verificação de autenticação e papel de administrador
     const sessionCookie = request.cookies.get('colaborador_session');
     let isAdmin = false;
+    let userId = null;
     if (sessionCookie) {
       const payload = await verifySession(sessionCookie.value);
-      if (payload && payload.isAdmin) {
-        isAdmin = true;
+      if (payload) {
+        userId = payload.id;
+        if (payload.isAdmin) {
+          isAdmin = true;
+        }
       }
     }
 
     let query = {};
 
-    // Se o usuário não for administrador, ele só pode ver e pesquisar termos com status 'Publicado' ou 'Em obsolescência'
+    // Se o usuário não for administrador, ele pode ver termos Publicados, Em obsolescência,
+    // ou termos Em aprovação de sua própria autoria (onde ele é o owner)
     if (!isAdmin) {
       const allowedStatuses = await Status.find({
         status: { $in: ['Publicado', 'Em obsolescência'] }
       });
-      const allowedStatusIds = allowedStatuses.map(s => s._id.toString());
+      const allowedStatusIds = allowedStatuses.map(s => s._id);
+
+      const emAprovacaoStatus = await Status.findOne({ status: 'Em aprovação' });
+
+      const userConditions = [
+        { status_id: { $in: allowedStatusIds } }
+      ];
+
+      if (emAprovacaoStatus && userId) {
+        userConditions.push({
+          status_id: emAprovacaoStatus._id,
+          owner_id: userId
+        });
+      }
 
       if (statusFilter) {
-        if (allowedStatusIds.includes(statusFilter)) {
+        const isPublicOrObs = allowedStatusIds.map(id => id.toString()).includes(statusFilter);
+        const isEmAprovacao = emAprovacaoStatus && emAprovacaoStatus._id.toString() === statusFilter;
+
+        if (isPublicOrObs) {
           query.status_id = statusFilter;
+        } else if (isEmAprovacao && userId) {
+          query.status_id = statusFilter;
+          query.owner_id = userId;
         } else {
-          // Se pediu um status não permitido, retorna vazio
+          // Se pediu um status não permitido ou sem acesso, retorna vazio
           return NextResponse.json({ success: true, data: [] });
         }
       } else {
-        query.status_id = { $in: allowedStatuses.map(s => s._id) };
+        query.$or = userConditions;
       }
     } else {
       // Filtro por Status para admins

@@ -64,6 +64,7 @@ export default function TermoDetailPage() {
   const [termo, setTermo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     if (!id) return;
@@ -77,6 +78,35 @@ export default function TermoDetailPage() {
       .catch(() => { setError('Erro ao carregar o termo.'); setLoading(false); });
   }, [id]);
 
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setCurrentUser(data.user);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleApprove = async () => {
+    if (!confirm('Deseja realmente aprovar este termo?')) return;
+    try {
+      const res = await fetch(`/api/termos/${id}/aprovar`, {
+        method: 'POST',
+      });
+      const data = await res.json();
+      if (data.success) {
+        setTermo(data.data);
+        alert('Termo aprovado e publicado com sucesso!');
+      } else {
+        alert(data.error || 'Erro ao aprovar o termo.');
+      }
+    } catch (err) {
+      alert('Erro de conexão ao tentar aprovar o termo.');
+    }
+  };
+
   const hasSynonyms = termo?.sinonimos?.length > 0;
   const hasAcronyms = termo?.acronimos?.length > 0;
   const hasApps = termo?.aplicacoes?.length > 0;
@@ -86,6 +116,11 @@ export default function TermoDetailPage() {
   const hasNotes = termo?.anotacoes?.length > 0;
   const hasRelated = termo?.termos_relacionados?.length > 0;
   const hasTags = termo?.tags?.length > 0;
+
+  const isPendingApproval = termo?.status_id?.status === 'Em aprovação';
+  const isOwner = currentUser && termo?.owner_id && (currentUser.id === (termo.owner_id._id || termo.owner_id));
+  const isAdmin = currentUser?.isAdmin;
+  const canApprove = isPendingApproval && (isOwner || isAdmin);
 
   return (
     <>
@@ -145,6 +180,20 @@ export default function TermoDetailPage() {
                   </span>
                 </div>
               </div>
+
+              {canApprove && (
+                <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+                    Este termo está pendente de aprovação. Como {currentUser?.isAdmin ? 'administrador' : 'proprietário (owner)'}, você pode aprová-lo para publicação:
+                  </span>
+                  <button onClick={handleApprove} className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                    Aprovar Termo
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* ── Two-column layout ──────────────────────────────────── */}
