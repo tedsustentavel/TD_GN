@@ -17,7 +17,7 @@ export default function LoginPage() {
         {/* Brand */}
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
-            <img src="/logo.svg" alt="Portal de Governança de Dados" style={{ height: '72px', width: '72px' }} />
+            <img src="/logo_ted.png" alt="Portal de Governança de Dados" style={{ height: '72px', width: 'auto' }} />
           </div>
           <h1 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '0.5rem', background: 'linear-gradient(135deg, var(--text-main) 0%, var(--text-muted) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Portal de Governança de Dados

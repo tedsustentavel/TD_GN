@@ -33,7 +33,7 @@ export default function NavHeader() {
     <nav className="app-container">
       <div className="nav-header">
         <Link href="/" className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
-          <img src="/logo.svg" alt="Portal de Governança de Dados Logo" style={{ height: '36px', width: '36px', display: 'block' }} />
+          <img src="/logo_ted.png" alt="Portal de Governança de Dados Logo" style={{ height: '36px', width: 'auto', display: 'block' }} />
           <span style={{ fontWeight: 800, color: 'var(--text-main)', background: 'linear-gradient(to right, var(--secondary), var(--primary))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Portal de Governança de Dados
           </span>
