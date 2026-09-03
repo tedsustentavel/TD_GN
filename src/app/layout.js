@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Glossário de Negócios",
-  description: "Glossário corporativo de termos, métricas e definições de negócios.",
+  title: "Portal de Governança de Dados",
+  description: "Portal corporativo para governança de dados, incluindo glossário de negócios e dicionário de dados.",
 };
 
 export default function RootLayout({ children }) {
