@@ -16,14 +16,14 @@ export default function LoginPage() {
       <div className="glass-card" style={{ width: '100%', maxWidth: '440px', padding: '2.5rem' }}>
         {/* Brand */}
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <div className="nav-brand" style={{ justifyContent: 'center', marginBottom: '1rem', fontSize: '2rem', fontWeight: 800 }}>
-            GN
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+            <img src="/logo.svg" alt="Portal de Governança de Dados" style={{ height: '72px', width: '72px' }} />
           </div>
           <h1 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '0.5rem', background: 'linear-gradient(135deg, var(--text-main) 0%, var(--text-muted) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Glossário de Negócios
+            Portal de Governança de Dados
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: '1.4' }}>
-            Acesse as definições, métricas e termos corporativos da nossa empresa.
+            Acesse e gerencie o glossário de negócios e o dicionário de dados corporativos da nossa empresa.
           </p>
         </div>
 

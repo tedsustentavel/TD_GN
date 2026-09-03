@@ -113,9 +113,12 @@ export default function HomePage() {
       <NavHeader />
       <main className="app-container">
         {/* Hero */}
-        <section className="search-hero">
-          <h1>Glossário de Negócios</h1>
-          <p>Encontre definições, métricas e termos corporativos de forma rápida e precisa.</p>
+        <section className="search-hero" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '0.75rem', marginBottom: '2.5rem' }}>
+          <img src="/logo.svg" alt="Portal de Governança de Dados Logo" style={{ height: '80px', width: '80px', marginBottom: '0.5rem' }} />
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800 }}>Portal de Governança de Dados</h1>
+          <p style={{ maxWidth: '640px', margin: '0 auto', color: 'var(--text-muted)' }}>
+            Consulte definições, conceitos e termos corporativos através do nosso Glossário de Negócios e Dicionário de Dados.
+          </p>
         </section>
 
         {/* Search & Filters */}

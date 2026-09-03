@@ -42,8 +42,8 @@ export default function AdminLoginPage() {
       <div className="glass-card" style={{ width: '100%', maxWidth: '420px' }}>
         {/* Brand */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div className="nav-brand" style={{ justifyContent: 'center', marginBottom: '0.5rem' }}>
-            GN
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.75rem' }}>
+            <img src="/logo.svg" alt="Portal de Governança de Dados" style={{ height: '56px', width: '56px' }} />
           </div>
           <h1 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.35rem' }}>
             Área Administrativa

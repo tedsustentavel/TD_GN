@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- Background/Main Outer Outline (Navy Blue) -->
+  <path d="M 256 40 
+           L 440 180 
+           V 330 
+           C 440 430, 370 475, 256 475 
+           C 142 475, 72 430, 72 330 
+           V 180 
+           Z" 
+        fill="none" 
+        stroke="#002140" 
+        stroke-width="32" 
+        stroke-linejoin="round" 
+        stroke-linecap="round"/>
+
+  <!-- Left Leaf Group -->
+  <g>
+    <!-- Left Leaf - Right Half (Darker Green) -->
+    <path d="M 256 410 C 200 390, 180 320, 256 235 Z" fill="#4B9E3A" />
+    <!-- Left Leaf - Left Half (Lighter Green) -->
+    <path d="M 256 410 C 145 410, 95 320, 95 210 C 145 180, 205 185, 256 235 C 180 320, 200 390, 256 410 Z" fill="#75C751" />
+  </g>
+
+  <!-- Right Leaf Group -->
+  <g>
+    <!-- Right Leaf - Left Half (Lighter Green) -->
+    <path d="M 256 410 C 312 390, 332 320, 256 235 Z" fill="#75C751" />
+    <!-- Right Leaf - Right Half (Darker Green) -->
+    <path d="M 256 410 C 367 410, 417 320, 417 210 C 367 180, 307 185, 256 235 C 332 320, 312 390, 256 410 Z" fill="#4B9E3A" />
+  </g>
+
+  <!-- Inner Navy Blue framing curves for leaves/seed -->
+  <path d="M 72 330 C 72 430, 142 475, 256 475 C 370 475, 440 430, 440 330" fill="none" stroke="#002140" stroke-width="32" stroke-linecap="round"/>
+  <path d="M 176 214 C 210 196, 240 210, 256 235 C 272 210, 302 196, 336 214" fill="none" stroke="#002140" stroke-width="32" stroke-linecap="round"/>
+
+  <!-- Center teardrop/seed shape (Navy blue frame and blue fill) -->
+  <path d="M 256 210 
+           C 315 280, 315 375, 256 410 
+           C 197 375, 197 280, 256 210 
+           Z" 
+        fill="#0096C7" 
+        stroke="#002140" 
+        stroke-width="24" 
+        stroke-linejoin="round"/>
+        
+  <!-- Center seed highlight / inner light blue -->
+  <path d="M 256 210 
+           C 285 260, 290 340, 256 410
+           C 278 375, 280 280, 256 210" 
+        fill="#00D4FF" />
+</svg>
