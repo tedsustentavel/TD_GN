@@ -114,7 +114,7 @@ export default function HomePage() {
       <main className="app-container">
         {/* Hero */}
         <section className="search-hero" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '0.75rem', marginBottom: '2.5rem' }}>
-          <img src="/logo.svg" alt="Portal de Governança de Dados Logo" style={{ height: '80px', width: '80px', marginBottom: '0.5rem' }} />
+          <img src="/logo_ted.png" alt="Portal de Governança de Dados Logo" style={{ height: '80px', width: 'auto', marginBottom: '0.5rem' }} />
           <h1 style={{ fontSize: '2.5rem', fontWeight: 800 }}>Portal de Governança de Dados</h1>
           <p style={{ maxWidth: '640px', margin: '0 auto', color: 'var(--text-muted)' }}>
             Consulte definições, conceitos e termos corporativos através do nosso Glossário de Negócios e Dicionário de Dados.

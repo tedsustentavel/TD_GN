@@ -43,7 +43,7 @@ export default function AdminLoginPage() {
         {/* Brand */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.75rem' }}>
-            <img src="/logo.svg" alt="Portal de Governança de Dados" style={{ height: '56px', width: '56px' }} />
+            <img src="/logo_ted.png" alt="Portal de Governança de Dados" style={{ height: '56px', width: 'auto' }} />
           </div>
           <h1 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.35rem' }}>
             Área Administrativa
